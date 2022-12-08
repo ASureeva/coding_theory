@@ -28,7 +28,7 @@ class Arithmetic:
         global msg_term
         decoder = []
         decoded_msg = ""
-        encoded_msg = Decimal(get_number(encoded_msg))
+        encoded_msg = Decimal(text_from_bits(encoded_msg))
         left = Decimal(0.0)
         right = Decimal(1.0)
 
@@ -50,9 +50,20 @@ class Arithmetic:
         return decoder, decoded_msg
 
 
-def get_number(number):
-    dec, zero = str(number).split(".")
-    dec = int(dec, 2)
-    zero = int(zero, 2)
-    result = f"0.{'0'*zero}{dec}"
-    return result
+def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
+    n = int(bits, 2)
+    return n.to_bytes((n.bit_length() + 7) // 8, 'big').decode(encoding, errors) or '\0'
+
+
+if __name__ == '__main__':
+    alphabet = ['a', 'b']
+    probability = [0.75, 0.25]
+    N = 14
+    sequence = "aabaaabaacdaae"
+    frequency_table = {"a": 0.2,
+                       "b": 0.1,
+                       "c": 0.3,
+                       "d": 0.2,
+                       "e": 0.2}
+
+    AE = Arithmetic(frequency_table)
